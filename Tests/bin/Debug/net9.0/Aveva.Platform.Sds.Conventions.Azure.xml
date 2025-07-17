@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Aveva.Platform.Sds.Conventions.Azure</name>
+    </assembly>
+    <members>
+        <member name="T:Aveva.Platform.Sds.Conventions.Azure.SdsAzureRetryPolicies">
+            <summary> Defines retry policies used by SDS when accessing Azure Storage. </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Conventions.Azure.SdsAzureRetryPolicies.GetPolicy(System.Int32,System.String,Microsoft.Extensions.Logging.ILogger)">
+            <summary> Get a retry policy that retries with exponential backoff and final exception recasting. Does NOT create blobs if they are missing.</summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Conventions.Azure.SdsAzureRetryPolicies.GetPolicy(System.Int32,System.String,System.Int32,Azure.Storage.Blobs.Specialized.PageBlobClient,Microsoft.Extensions.Logging.ILogger,System.Diagnostics.Metrics.Counter{System.Int32},Aveva.Platform.Sds.Conventions.SdsAzureRequestContext)">
+            <summary> Get a retry policy that handles blob creation, in case they are missing. Also retries with exponential backoff and final exception recasting. </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Conventions.Azure.SdsFabricStorageAccountState">
+            <summary>
+            States for SdsFabric Azure storage accounts
+            </summary>
+        </member>
+        <member name="F:Aveva.Platform.Sds.Conventions.Azure.SdsFabricStorageAccountState.Global">
+            <summary>
+            Namespace Repository and Telemetry Storage Accounts
+            </summary>
+        </member>
+        <member name="F:Aveva.Platform.Sds.Conventions.Azure.SdsFabricStorageAccountState.Active">
+            <summary>
+            In use by a tenant/namespace
+            </summary>
+        </member>
+        <member name="F:Aveva.Platform.Sds.Conventions.Azure.SdsFabricStorageAccountState.Inactive">
+            <summary>
+            Not in use by a tenant/namespace (queued for deletion)
+            </summary>
+        </member>
+        <member name="F:Aveva.Platform.Sds.Conventions.Azure.SdsFabricStorageAccountState.CreationRollback">
+            <summary>
+            Applied during Rollback of storage account creation
+            </summary>
+        </member>
+        <member name="F:Aveva.Platform.Sds.Conventions.Azure.SdsFabricStorageAccountState.MaintenanceInProgress">
+            <summary>
+            Undergoing maintenance, ignore in auditing
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Conventions.Azure.StateDefinitions">
+            <summary>
+            Provides configuration information for SdsFabric Azure storage account states.
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Conventions.Azure.StateDefinitions.GetGlobalTags">
+            <summary>
+            Provides tags to be applied on global storage accounts.
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Conventions.Azure.StateDefinitions.GetActiveTags(System.String,System.String)">
+            <summary>
+            Provides tags to be applied on active storage accounts.
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Conventions.Azure.StateDefinitions.GetInactiveTags(System.String,System.String,System.TimeSpan)">
+            <summary>
+            Provides tags to be applied on inactive storage accounts.
+            </summary>
+            <param name="tenantId">TenantId.</param>
+            <param name="namespaceId">NamespaceId.</param>
+            <param name="retentionPeriod">The amount of time from now that the account will be retained before deletion.</param>
+            <remarks>
+            Applying these tags will queue the account for deletion.
+            </remarks>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Conventions.Azure.StateDefinitions.GetCreationRollbackTags(System.String,System.String)">
+            <summary>
+            Provides tags to be applied during rollback of storage account creation.
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Conventions.Azure.StateDefinitions.GetMaintenanceTags(System.String,System.String,System.TimeSpan)">
+            <summary>
+            Provides tags to be applied on storage accounts that are undergoing maintenance.
+            </summary>
+            <remarks>
+            Accounts with maintenance tag will be ignored in auditing.
+            When maintenance is complete, storage account should be re-labeled with Active tag.
+            </remarks>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,203 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Aveva.Platform.Sds.Conventions</name>
+    </assembly>
+    <members>
+        <member name="T:Aveva.Platform.Sds.Conventions.ApiEndpointNameAttribute">
+            <summary>
+            Attribute used to set the endpoint name that will be displayed in documentation.
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Conventions.ApiEndpointNameAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Aveva.Platform.Sds.Conventions.ApiEndpointNameAttribute"/> class.
+            </summary>
+            <param name="endpointName">Endpoint name.</param>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Conventions.ApiEndpointNameAttribute.EndpointName">
+            <summary>
+            Gets or sets endpoint name.
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Conventions.EventIds">
+            <summary>
+             SDS EventIds are 200,000 - 249,999.
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Conventions.HttpExtensions">
+            <summary>
+            Extensions for http methods
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Conventions.HttpExtensions.Copy(System.Net.Http.HttpRequestMessage)">
+            <summary>
+            Make a copy of a http request message
+            </summary>
+            <param name="original">original request message</param>
+            <returns>copy of the message</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Conventions.HttpExtensions.ChangeBaseAddress(System.Net.Http.HttpRequestMessage,System.Uri)">
+            <summary>
+            Change the Uri of a request to a new base address
+            </summary>
+            <param name="request">request message</param>
+            <param name="baseAddress">desired address</param>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Conventions.HttpExtensions.IsSuccessOrFound(Microsoft.AspNetCore.Http.HttpResponse)">
+            <summary>
+            Checks if an HttpResponse's status is OK or is found
+            </summary>
+            <param name="httpResponse">response</param>
+            <returns>true or false</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Conventions.HttpExtensions.IsSuccessStatusCode(Microsoft.AspNetCore.Http.HttpResponse)">
+            <summary>
+            Checks if an HttpResponse's status is OK
+            </summary>
+            <param name="httpResponse">response</param>
+            <returns>true or false</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Conventions.HttpExtensions.IsSuccessOrFound(System.Net.Http.HttpResponseMessage)">
+            <summary>
+            Checks if an HttpResponse's status  is OK or is found
+            </summary>
+            <param name="httpResponseMessage">response message</param>
+            <returns>true or false</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Conventions.HttpExtensions.IsSuccessOrFound(System.Int32)">
+            <summary>
+            Checks if an integer status code is OK or is found.
+            </summary>
+            <param name="statusCode">integer representation of a status code</param>
+            <returns>true or false</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Conventions.HttpExtensions.IsSuccessStatusCode(System.Int32)">
+            <summary>
+            Checks if an integer status code is OK.
+            </summary>
+            <param name="statusCode">integer representation of a status code</param>
+            <returns>true or false</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Conventions.Functional.Functions.ApplyPartial``3(System.Func{``0,``1,``2},``0)">
+            <summary>
+            Converts a function <typeparamref name="TResult"/> = <paramref name="function"/>(<typeparamref name="T1"/>, <typeparamref name="T2"/>) to
+            a function <typeparamref name="TResult"/> = <paramref name="function"/>(<typeparamref name="T2"/>) by applying a concrete
+            value <paramref name="knownArg"/> to the function. 
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Conventions.Functional.OneOf`2">
+            <summary>
+            Class that allows creating simple two-option discriminated unions with implicit type casting.
+            </summary>
+            <remarks>
+            Disposes the underlying type when <see cref="T:System.IDisposable"/>, thus allowing usage in the 'using' patterns.
+            </remarks>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Conventions.Hasher">
+            <summary>
+            Creates MD5 hashes.
+            </summary>
+            <remarks>
+            Use a naming function that promotes differences in the start of the name.
+            As recommended by: https://docs.microsoft.com/en-us/azure/storage/common/storage-performance-checklist#subheading47
+            </remarks>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Conventions.Hasher.GetMd5Hash(System.String)">
+            <remarks>This class is not safe to use for cryptography.</remarks>>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Conventions.SdsRetryOptions">
+            <summary>
+            Encapsulates configuration options for retry policies, including exception and result handling,
+            retry count, sleep duration, and logging behavior.
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Conventions.SdsRetryOptions.#ctor(System.Func{System.Exception,System.Boolean},System.Func{System.Net.Http.HttpResponseMessage,System.Boolean},System.Int32,System.Func{System.Int32,System.TimeSpan},System.Action{System.Exception,System.TimeSpan,System.Int32,Polly.Context},Microsoft.Extensions.Logging.LogLevel)">
+            <summary>
+            Initializes a new instance of <see cref="T:Aveva.Platform.Sds.Conventions.SdsRetryOptions"/> for exception and result-based retry policies,
+            where the <paramref name="onRetry"/> action should be synchronous (it will not be awaited).
+            </summary>
+            <param name="isHandleableDelegate">Predicate to determine if an exception is retryable.</param>
+            <param name="isRetryableStatusDelegate">Predicate to determine if an HTTP response is retryable.</param>
+            <param name="maxRetries">Maximum number of retry attempts.</param>
+            <param name="sleepDurationProvider">Delegate to calculate the delay between retries.</param>
+            <param name="onRetry">
+            Synchronous action to perform on each retry. 
+            <b>Note:</b> Actions passed in should not be asynchronous because it will never be awaited.
+            </param>
+            <param name="logLevel">Log level for retry events.</param>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Conventions.SdsRetryOptions.#ctor(System.Func{System.Exception,System.TimeSpan,System.Int32,Polly.Context,System.Threading.Tasks.Task},System.Func{System.Exception,System.Boolean},System.Int32,System.Func{System.Int32,System.TimeSpan},Microsoft.Extensions.Logging.LogLevel)">
+            <summary>
+            Initializes a new instance of <see cref="T:Aveva.Platform.Sds.Conventions.SdsRetryOptions"/> for exception-based retry policies.
+            </summary>
+            <param name="onRetry">Async function to perform on each retry.</param>
+            <param name="isHandleableDelegate">Predicate to determine if an exception is retryable.</param>
+            <param name="maxRetries">Maximum number of retry attempts.</param>
+            <param name="sleepDurationProvider">Delegate to calculate the delay between retries.</param>
+            <param name="logLevel">Log level for retry events.</param>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Conventions.SdsRetryOptions.GetSleepDurationDelegate(System.TimeSpan)">
+            <summary>
+            Returns a delegate that always returns the specified retry delay for each attempt.
+            </summary>
+            <param name="retryDelay">The fixed delay to use between retries.</param>
+            <returns>A delegate that returns the fixed delay.</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Conventions.SdsRetryOptions.GetSleepDurationDelegate">
+            <summary>
+            Returns a delegate that calculates an exponential backoff with jitter for retry delays.
+            </summary>
+            <returns>A delegate that returns a calculated delay for each retry attempt.</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Conventions.SdsRetryOptions.GetIsRetyrableStatusDelegate">
+            <summary>
+            Returns a delegate that determines if an HTTP response should be retried based on status code.
+            Retries all responses except those with status codes black-listed in the non-retryable list or successful/found responses.
+            </summary>
+            <returns>A delegate for retryable status code evaluation.</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Conventions.SdsRetryPolicy.GetAsyncRetryPolicy(Microsoft.Extensions.Logging.ILogger,Aveva.Platform.Sds.Conventions.SdsRetryOptions,System.String)">
+            <summary>
+            Creates an exception-based retry policy.
+            Retries when the provided <paramref name="sdsRetryOptions.IsHandleableDelegate.IsHandleableDelegate"/> returns true for the thrown exception.
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Conventions.SdsRetryPolicy.GetAsyncRetryPolicy``1(Microsoft.Extensions.Logging.ILogger,Aveva.Platform.Sds.Conventions.SdsRetryOptions,System.String)">
+            <summary>
+            Creates an exception-based retry policy.
+            Retries when an exception of type <typeparamref name="TException"/> is thrown.
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Conventions.SdsRetryPolicy.GetAsyncRetryPolicy``2(Microsoft.Extensions.Logging.ILogger,Aveva.Platform.Sds.Conventions.SdsRetryOptions,System.String)">
+            <summary>
+            Creates an exception-based retry policy.
+            Retries when an exception of type <typeparamref name="TEx1"/> or <typeparamref name="TEx2"/> is thrown.
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Conventions.SdsRetryPolicy.GetCombinationAsyncRetryPolicy``1(Microsoft.Extensions.Logging.ILogger,Aveva.Platform.Sds.Conventions.SdsRetryOptions,System.String)">
+            <summary>
+            Creates a combination retry policy (exception-based and result-based).
+            Retries when an exception of type <typeparamref name="TException"/> is thrown,
+            or when the <paramref name="sdsRetryOptions.IsRetryableStatusDelegate.IsRetryableStatusDelegate"/> returns true for the <see cref="T:System.Net.Http.HttpResponseMessage"/>.
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Conventions.SdsRetryPolicy.GetCombinationAsyncRetryPolicy``2(Microsoft.Extensions.Logging.ILogger,Aveva.Platform.Sds.Conventions.SdsRetryOptions,System.Action{Polly.DelegateResult{System.Net.Http.HttpResponseMessage},System.TimeSpan,System.Int32,Polly.Context},System.String)">
+            <summary>
+            Creates a combination retry policy (exception-based and result-based).
+            Retries when an exception of type <typeparamref name="TEx1"/> or <typeparamref name="TEx2"/> is thrown,
+            or when the <paramref name="sdsRetryOptions.IsRetryableStatusDelegate.IsRetryableStatusDelegate"/> returns true for the <see cref="T:System.Net.Http.HttpResponseMessage"/>.
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Conventions.SdsRetryPolicy.AdaptOnRetry(System.Func{System.Exception,System.TimeSpan,System.Int32,Polly.Context,System.Threading.Tasks.Task})">
+            <summary>
+            Adapts the <paramref name="onExceptionRetry"/> into a result-based OnRetry for result-based retry policies. 
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Diagnostics.StopwatchSlim">
+            <summary>
+            A lightweight, allocation free stopwatch.
+            </summary>
+        </member>
+    </members>
+</doc>

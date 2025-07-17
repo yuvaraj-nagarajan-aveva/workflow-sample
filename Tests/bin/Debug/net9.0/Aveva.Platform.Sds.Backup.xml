@@ -1,0 +1,1296 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Aveva.Platform.Sds.Backup</name>
+    </assembly>
+    <members>
+        <member name="T:Aveva.Platform.Sds.Backup.AzureBlobStateSnapshotItem">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.AzureBlobStateSnapshotItem.#ctor(Aveva.Platform.Sds.Backup.ISourceState,Aveva.Platform.Sds.Backup.IBackupState,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="sourceState">ISourceState instance for Azure Blob</param>
+            <param name="backupState">IBackupState instance for Azure Blob</param>
+            <param name="sourceSnapshotId">Source snapshot Id</param>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.AzureBlobStateSnapshotItem.SourceState">
+            <inheritdoc/>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.AzureBlobStateSnapshotItem.BackupState">
+            <inheritdoc/>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.AzureBlobStateSnapshotItem.SourceSnapshotId">
+            <inheritdoc/>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.BackupRecordReader`2">
+            <summary>
+            Azure Blob Storage Backup Record Repository
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.BackupRecordReader`2.#ctor(Azure.Storage.Blobs.BlobServiceClient,Microsoft.Extensions.Logging.ILogger)">
+            <summary>
+            Creates a repository instance
+            </summary>
+            <param name="blobServiceClient">Backup storage account blob service client</param>
+            <param name="logger">Logger</param>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.BackupRecordReader`2.ContainerClient">
+            <summary>
+            BlobContainerClient for repository
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.BackupRecordReader`2.Logger">
+            <summary>
+            Logger
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.BackupRecordReader`2.ContainerExists">
+            <summary>
+            Whether or not the container exists
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.BackupRecordReader`2.ListAsync(System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.BackupRecordReader`2.TryGetValueAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.BackupRecordReader`2.GetBlockBlobClient(System.String)">
+            <summary>
+            GetBlockBlobClient
+            </summary>
+            <param name="backupId">Backup Id</param>
+            <returns>BlockBlobClient for a backup</returns>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.BackupRecordRepository`2">
+            <summary>
+            Azure Blob Storage Backup Record Repository
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.BackupRecordRepository`2.#ctor(Azure.Storage.Blobs.BlobServiceClient,Microsoft.Extensions.Logging.ILogger)">
+            <summary>
+            Creates a repository instance
+            </summary>
+            <param name="blobServiceClient">Backup storage account blob service client</param>
+            <param name="logger">Logger</param>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.BackupRecordRepository`2.TryCommitAsync(`0,`1,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.BackupRecordRepository`2.TryDeleteAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.BackupState">
+            <summary>
+            State representation of backup blob
+            </summary>
+        </member>
+        <member name="F:Aveva.Platform.Sds.Backup.BackupState.SourceSnapshotMetadataKey">
+            <summary>
+            Blob Metadata
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.BackupState.#ctor(Azure.Storage.Blobs.Specialized.PageBlobClient,Microsoft.Extensions.Logging.ILogger,System.String,Polly.IAsyncPolicy)">
+            <summary>
+            Creates new state representation of backup blob
+            </summary>
+            <param name="pageBlobClient">Page blob client for backup blob</param>
+            <param name="logger">Logger</param>
+            <param name="backupId">Backup OperationId</param>
+            <param name="retryPolicy">Retry policy</param>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.BackupState.GetLatestSourceSnapshotIdAsync">
+            <inheritdoc/>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.BackupState.TransferDifferenceAsync(System.Uri,Aveva.Platform.Sds.Backup.StateDifference)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.BackupState.SnapshotAsync(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.BlobClientRetryPolicy">
+            <summary>
+            Retry policy for Azure PageBlobClient API calls
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.BlobClientRetryPolicy.Create(Microsoft.Extensions.Logging.ILogger)">
+            <summary>
+            Create retry policy
+            </summary>
+            <param name="logger">logger</param>
+            <returns>Retry policy</returns>
+            <exception cref="T:System.ArgumentNullException">logger cannot be null</exception>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.BlobContainerClientExtensions">
+            <summary>
+            Extensions for BlobContainerClient
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.BlobContainerClientExtensions.GetBlobSasQueryParameters(Azure.Storage.Blobs.BlobContainerClient,Azure.Storage.Sas.BlobSasPermissions,System.TimeSpan,System.Threading.CancellationToken)">
+            <summary>
+            Obtains Shared Access Signature
+            </summary>
+            <param name="containerClient">Blob Client</param>
+            <param name="permissions">SAS Permissions</param>
+            <param name="duration">Duration of SAS</param>
+            <param name="cancellationToken">Cancellation Token</param>
+            <returns>BlobSasQueryParameters</returns>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.BlobSasOptions">
+            <summary>
+            Config options for generating SAS tokens
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.BlobSasOptions.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Aveva.Platform.Sds.Backup.BlobSasOptions"/> class
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.BlobSasOptions.Duration">
+            <summary>
+            Duration for which the SAS token is valid
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.BlobSasOptions.StartTimeOffset">
+            <summary>
+            The time offset to account for clock drift
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.BlobSasOptions.BlobSasPermissions">
+            <summary>
+            Permissions assigned to the SAS token
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.BlobSasOptions.RenewalGracePeriod">
+            <summary>
+            The time before expiration when a new UserDelegationKey should be requested
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.BlobSasService">
+            <summary>
+            Service for generating SAS URIs for Azure Blob Storage with User Delegation Key caching
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.BlobSasService.#ctor(Microsoft.Extensions.Caching.Memory.IMemoryCache,Aveva.Platform.Sds.Backup.IBlobUserDelegationKeyProvider,Microsoft.Extensions.Logging.ILogger{Aveva.Platform.Sds.Backup.BlobSasService},Microsoft.Extensions.Options.IOptionsMonitor{Aveva.Platform.Sds.Backup.BlobSasOptions})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Aveva.Platform.Sds.Backup.BlobSasService" /> class
+            </summary>
+            <param name="cache">Memory cache for storing User Delegation Keys</param>
+            <param name="blobUserDelegationKeyProvider">Provides user delegation keys and blob metadata</param>
+            <param name="logger">an instance of ILogger with T set as BlobSasService</param>
+            <param name="options">Configuration options for SAS token generation</param>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.BlobSasService.GetBlobSasUriAsync(Azure.Storage.Blobs.Specialized.BlobBaseClient,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.BlobSasService.Dispose">
+            <summary>
+            Releases all resources used by the <see cref="T:Aveva.Platform.Sds.Backup.BlobSasService"/> instance
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.BlobUserDelegationKeyProvider">
+            <inheritdoc />
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.BlobUserDelegationKeyProvider.GetUserDelegationKeyAsync(Azure.Storage.Blobs.Specialized.BlobBaseClient,System.DateTimeOffset,System.DateTimeOffset,Microsoft.Extensions.Logging.ILogger,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Extensions.IServiceCollectionExtensions">
+            <summary>
+            Extension methods for <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> to register services related to Sds Backup operations.
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Extensions.IServiceCollectionExtensions.AddSharedSdsWorkflowEngine(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Registers the shared Sds Workflow Engine services with the specified configuration.
+            </summary>
+            <param name="services">IServiceCollection services</param>
+            <param name="configuration">IConfiguration configuration</param>
+            <returns>IServiceCollection</returns>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.IBackupMetadata">
+            <summary>
+            Can be convertable to and from a <see cref="T:System.Collections.Generic.Dictionary`2"/>
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.IBackupMetadata.BackupId">
+            <summary>
+            Identifier
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.IBackupMetadata.ToDictionary">
+            <summary>
+            
+            </summary>
+            <returns>Dictionary from object</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.IBackupMetadata.FromDictionary(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            
+            </summary>
+            <returns>Object from dictionary</returns>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.IBackupRecordReader`2">
+            <summary>
+            Repository for reading backup records
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.IBackupRecordReader`2.TryGetValueAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Attempts to retreive a backup record
+            </summary>
+            <param name="backupId">BackupId</param>
+            <param name="cancellationToken">Cancellation Token</param>
+            <returns>Whether or not the backup record exists, the record metadata, and record content</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.IBackupRecordReader`2.ListAsync(System.Threading.CancellationToken)">
+            <summary>
+            Retrieves all backup record metadata
+            </summary>
+            <param name="cancellationToken">Cancellation Token</param>
+            <returns>Async enumerable of backup record metadata</returns>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.IBackupRecordRepository`2">
+            <summary>
+            Repository for recording backup records
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.IBackupRecordRepository`2.TryCommitAsync(`0,`1,System.Threading.CancellationToken)">
+            <summary>
+            Commits the backup record to the repository
+            </summary>
+            <param name="recordMetadata">Backup record metadata</param>
+            <param name="recordContent">Backup record content</param>
+            <param name="cancellationToken">Cancellation Token</param>
+            <returns>Task</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.IBackupRecordRepository`2.TryDeleteAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Deletes a backup record
+            </summary>
+            <param name="backupId">BackupId of backup record to delete</param>
+            <param name="cancellationToken">Cancellation Token</param>
+            <returns>Task</returns>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.IBackupState">
+            <summary>
+            Representation of backup state
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.IBackupState.GetLatestSourceSnapshotIdAsync">
+            <summary>
+            Identifies the most recent snapshot withing the backup state
+            </summary>
+            <returns>Identifier of most recent snapshot</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.IBackupState.SnapshotAsync(System.String)">
+            <summary>
+            Create persistent snapshot of backup state
+            </summary>
+            <param name="sourceSnapshotId">Source snapshot Id</param>
+            <returns>Backup snapshot Id</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.IBackupState.TransferDifferenceAsync(System.Uri,Aveva.Platform.Sds.Backup.StateDifference)">
+            <summary>
+            Transfers partial contents from source state to backup state
+            </summary>
+            <param name="sourceSnapshotUri">Url of source snapshot</param>
+            <param name="diff">State difference</param>
+            <returns>Task</returns>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.IBlobSasService">
+            <summary>
+            Interface for generating SAS URIs for Azure Blob Storage
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.IBlobSasService.GetBlobSasUriAsync(Azure.Storage.Blobs.Specialized.BlobBaseClient,System.Threading.CancellationToken)">
+            <summary>
+            Generates a SAS Uri for a given BlobBaseClient
+            </summary>
+            <param name="blobClient">The blob client for which the SAS Uri is generated</param>
+            <param name="cancellationToken">Cancellation token for the operation</param>
+            <returns>Task that resolves to the generated SAS Uri</returns>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.IBlobUserDelegationKeyProvider">
+            <summary>
+            Defines a provider for retrieving a user delegation key required for generating SAS tokens
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.IBlobUserDelegationKeyProvider.GetUserDelegationKeyAsync(Azure.Storage.Blobs.Specialized.BlobBaseClient,System.DateTimeOffset,System.DateTimeOffset,Microsoft.Extensions.Logging.ILogger,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves a user delegation key for the specified blob.
+            This key is used to create SAS tokens with delegated permissions
+            </summary>
+            <param name="blobBaseClient">The blob client representing the target blob, whose parent blob service will be used to obtain the delegation key</param>
+            <param name="startTime">The start time for the delegation key validity period.</param>
+            <param name="endTime">The expiration time for the delegation key.</param>
+            <param name="logger">An instance of ILogger</param>
+            <param name="cancellationToken">A cancellation token to observe while waiting for the task to complete.</param>
+            <returns>A task result containing the user delegation key.</returns>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.ISnapshotMigrator">
+            <summary>
+            Synchronizes contents between a source state and backup state
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.ISnapshotMigrator.IncrementalCopyAsync(Aveva.Platform.Sds.Backup.IStateSnapshotItem)">
+            <summary>
+            Copies over snapshots of a source state into a backup state
+            </summary>
+            <param name="stateSnapshotItem">State snapshot item</param>
+            <returns>Backup snapshotId</returns>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.ISourceState">
+            <summary>
+            Snapshotted representation of source state
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.ISourceState.GetDiffRangesAsync(System.String,System.String)">
+            <summary>
+            Determine the difference between source state snapshot and another snapshot
+            </summary>
+            <param name="previousSnapshotId">Id of previous snapshot to serve as base of comparison</param>
+            <param name="snapshotId">Id of snapshot</param>
+            <returns>Offset and lenth to describe the range of contents that have changed</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.ISourceState.GetPageBlobClient">
+            <summary>
+            Gets the PageBlobClient associated with the SourceState
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.IStateSnapshotItem">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.IStateSnapshotItem.SourceState">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.IStateSnapshotItem.BackupState">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.IStateSnapshotItem.SourceSnapshotId">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.KubernetesBackupRecord">
+            <summary>
+            Contains Blob names for the backued up Kubernetes Resources
+            </summary>
+            <param name="configMapsBlobLocation">Dictionary with blob names for backed up config maps</param>
+            <param name="sdsIntanceBlobLocation">Blob name for backed up SDS Instance specification</param>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.KubernetesBackupRecord.#ctor(System.Collections.Generic.IReadOnlyDictionary{System.String,System.String},System.String)">
+            <summary>
+            Contains Blob names for the backued up Kubernetes Resources
+            </summary>
+            <param name="configMapsBlobLocation">Dictionary with blob names for backed up config maps</param>
+            <param name="sdsIntanceBlobLocation">Blob name for backed up SDS Instance specification</param>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.KubernetesBackupRecord.ConfigMapsBlob">
+            <summary>
+            Blob names for backed up Kubernetes config maps
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.KubernetesBackupRecord.SdsInstanceSpecBlob">
+            <summary>
+            Blob name for SDS Instance specification
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Restore.BackupBlobServiceClientProvider">
+            <summary>
+            BlobServiceClient provider for backup storage accounts
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Restore.BackupBlobServiceClientProvider.#ctor">
+            <summary>
+            Creates new instance
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Restore.BackupBlobServiceClientProviderBase">
+            <summary>
+            BlobServiceClient provider for backup storage accounts
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.BackupBlobServiceClientProviderBase.ResourceGroup">
+            <summary>
+            Resource Group with SDS Backup Storage Accounts
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Restore.BackupBlobServiceClientProviderBase.GetClientAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Obtains client
+            </summary>
+            <param name="instanceUniqueId">Instance unique Id</param>
+            <param name="cancellationToken">Cancellation Token</param>
+            <returns>BlobServiceClient</returns>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Restore.BackupRecordRepositoryProvider">
+            <summary>
+            <inheritdoc/>
+            </summary>
+            <remarks>
+            Creates a BackupRecordRepositoryFactory
+            </remarks>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Restore.BackupRecordRepositoryProvider.#ctor(Aveva.Platform.Sds.Backup.Restore.IBackupBlobServiceClientProvider,Aveva.Platform.Sds.Backup.Telemetry.ITelemetryBlobServiceClientProvider,Microsoft.Extensions.Logging.ILogger{Aveva.Platform.Sds.Backup.Restore.BackupRecordRepositoryProvider})">
+            <summary>
+            <inheritdoc/>
+            </summary>
+            <remarks>
+            Creates a BackupRecordRepositoryFactory
+            </remarks>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Restore.BackupRecordRepositoryProvider.GetSdsBackupRecordRepositoryAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Obtaining backup record repository for an instance of SDS
+            </summary>
+            <param name="instanceUniqueId">Connect SDS Instance Unique Id</param>
+            <param name="cancellationToken">Cancellation Token</param>
+            <returns>Backup Record Repository</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Restore.BackupRecordRepositoryProvider.GetTelemetryBackupRecordRepository">
+            <inheritdoc/>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Restore.IBackupBlobServiceClientProvider">
+            <summary>
+            BlobServiceClient provider for backup storage accounts
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Restore.IBackupBlobServiceClientProvider.GetClientAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Obtains client
+            </summary>
+            <param name="instanceUniqueId">Instance unique Id</param>
+            <param name="cancellationToken">Cancellation Token</param>
+            <returns>BlobServiceClient</returns>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Restore.IBackupRecordRepositoryProvider">
+            <summary>
+            Provider for obtaining backup record repositories for instances of SDS
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Restore.IBackupRecordRepositoryProvider.GetSdsBackupRecordRepositoryAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves a backup record repository
+            </summary>
+            <param name="instanceUniqueId">SDS Instance Unique Id</param>
+            <param name="cancellationToken">Cancellation Token</param>
+            <returns>Backup Record Repository</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Restore.IBackupRecordRepositoryProvider.GetTelemetryBackupRecordRepository">
+            <summary>
+            Retrieves telemetry backup record repository
+            </summary>
+            <returns>Telemetry Backup Record Repository</returns>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Restore.ISdsBackupRecordReader">
+            <summary>
+            Backup Record Reader for SDS Backups
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Restore.ISdsBackupRecordRepository">
+            <summary>
+            Backup Record Repository for SDS Backups
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Restore.RestorationManifestDirective">
+            <summary>
+            Configuration for restoration
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Restore.RestorationManifestDirective.#ctor(System.String,System.String,System.DateTimeOffset,System.Uri,System.Uri)">
+            <summary>
+            Instantiate RestorationDetails
+            </summary>
+            <param name="backupInstanceUniqueId">Instance Unique Id of Backup Instance</param>
+            <param name="restoreInstanceUniqueId">Instance Unique Id of Backup Instance</param>
+            <param name="restoreTime">Point in time to restore to (historical nearest)</param>
+            <param name="backupBlobEndpoint">BlobEndpoint for backup storage account</param>
+            <param name="restoreBlobEndpoint">BlobEndpoint for restore storage account</param>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.RestorationManifestDirective.BackupInstanceUniqueId">
+            <summary>
+            Backup Instance Unique Id
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.RestorationManifestDirective.RestoreInstanceUniqueId">
+            <summary>
+            Restore Instance Unique Id
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.RestorationManifestDirective.RestoreTime">
+            <summary>
+            Restore Time
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.RestorationManifestDirective.BackupBlobEndpoint">
+            <summary>
+            Backup BlobEndpoint
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.RestorationManifestDirective.RestoreBlobEndpoint">
+            <summary>
+            Restore BlobEndpoint
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Restore.RestorationManifestDirective.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Restore.RestorationManifestDirective.Equals(Aveva.Platform.Sds.Backup.Restore.RestorationManifestDirective)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Restore.RestorationManifestDirective.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Restore.RestorationRequest">
+            <summary>
+            Request body schema for restoration requests
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.RestorationRequest.RestoreTimestamp">
+            <summary>
+            Timestamp to restore
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Restore.RestoreStatus">
+            <summary>
+            Restore Status
+            </summary>
+        </member>
+        <member name="F:Aveva.Platform.Sds.Backup.Restore.RestoreStatus.Started">
+            <summary>
+            Started
+            </summary>
+        </member>
+        <member name="F:Aveva.Platform.Sds.Backup.Restore.RestoreStatus.Running">
+            <summary>
+            Running
+            </summary>
+        </member>
+        <member name="F:Aveva.Platform.Sds.Backup.Restore.RestoreStatus.Failed">
+            <summary>
+            Failed
+            </summary>
+        </member>
+        <member name="F:Aveva.Platform.Sds.Backup.Restore.RestoreStatus.Completed">
+            <summary>
+            Completed
+            </summary>
+        </member>
+        <member name="F:Aveva.Platform.Sds.Backup.Restore.RestoreStatus.Canceled">
+            <summary>
+            Canceled
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Restore.RestoreOperationRecordBase">
+            <summary>
+            Restore Operation Record
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.RestoreOperationRecordBase.RestoreId">
+            <summary>
+            Restore Operation Id
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.RestoreOperationRecordBase.RestoreStatus">
+            <summary>
+            Restore Operation Status
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.RestoreOperationRecordBase.RestoreStartTime">
+            <summary>
+            Restore Operation Start Time
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.RestoreOperationRecordBase.RestoreEndTime">
+            <summary>
+            Restore Operation End Time
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.RestoreOperationRecordBase.CancellationTokenSource">
+            <summary>
+            Restore operation cancellation token
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Restore.SdsAccountRestorationManifest">
+            <summary>
+            Account restoration manifest
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Restore.SdsAccountRestorationManifest.#ctor">
+            <summary>
+            Default ctor for serialization
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Restore.SdsAccountRestorationManifest.#ctor(Aveva.Platform.Sds.Backup.Restore.RestorationManifestDirective)">
+            <summary>
+            Creates new storage account manifest
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.SdsAccountRestorationManifest.Directive">
+            <summary>
+            Backup Instance Unique Id
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.SdsAccountRestorationManifest.ContainerRestorationManifests">
+            <summary>
+            Container manifests
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Restore.SdsContainerRestorationManifest">
+            <summary>
+            Manifest containing information nessecary to restore an SDS backup into a destination account
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Restore.SdsContainerRestorationManifest.#ctor">
+            <summary>
+            Default ctor for serialization
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Restore.SdsContainerRestorationManifest.#ctor(System.Uri,System.Uri,System.Collections.Generic.List{Aveva.Platform.Sds.Backup.Restore.TransferEndpoints})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Aveva.Platform.Sds.Backup.Restore.SdsContainerRestorationManifest"/> class
+            </summary>
+            <param name="sourceContainerUri">Source Container Uri</param>
+            <param name="destinationContainerUri">Destination Container Uri</param>
+            <param name="transferEndpoints">Transfer Endpoints</param>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.SdsContainerRestorationManifest.SourceContainerUri">
+            <summary>
+            Source Container Uri
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.SdsContainerRestorationManifest.DestinationContainerUri">
+            <summary>
+            Destination Container Uri
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.SdsContainerRestorationManifest.TransferEndpoints">
+            <summary>
+            Transfer Endpoints
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Restore.Models.SdsInstanceRestoration">
+            <summary>
+            SdsInstanceRestoration CRD model
+            </summary>
+        </member>
+        <member name="F:Aveva.Platform.Sds.Backup.Restore.Models.SdsInstanceRestoration.KubeApiVersion">
+            <summary>
+            ApiVersion
+            </summary>
+        </member>
+        <member name="F:Aveva.Platform.Sds.Backup.Restore.Models.SdsInstanceRestoration.KubeKind">
+            <summary>
+            CR Kind
+            </summary>
+        </member>
+        <member name="F:Aveva.Platform.Sds.Backup.Restore.Models.SdsInstanceRestoration.KubeGroup">
+            <summary>
+            CR Group Name
+            </summary>
+        </member>
+        <member name="F:Aveva.Platform.Sds.Backup.Restore.Models.SdsInstanceRestoration.KubePluralName">
+            <summary>
+            CR Plural Name
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Restore.Models.SdsInstanceRestoration.GetName(System.String)">
+            <summary>
+            Gets standardized name of SdsInstanceRestoration
+            </summary>
+            <param name="instanceUniqueId">Instance Unique Id</param>
+            <returns>Name</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Restore.Models.SdsInstanceRestoration.GetNamespace(System.String)">
+            <summary>
+            Gets standardized namespace of SdsInstanceRestoration
+            </summary>
+            <param name="instanceUniqueId">Instance Unique Id</param>
+            <returns>Namespace</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Restore.Models.SdsInstanceRestoration.#ctor(k8s.Models.V1ObjectMeta,Aveva.Platform.Sds.Backup.Restore.Models.SdsInstanceRestorationSpec)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.Models.SdsInstanceRestoration.ApiVersion">
+            <inheritdoc/>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.Models.SdsInstanceRestoration.Kind">
+            <inheritdoc/>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.Models.SdsInstanceRestoration.Metadata">
+            <inheritdoc/>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.Models.SdsInstanceRestoration.Spec">
+            <summary>
+            Spec object model for SdsInstanceRestoration CRD
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Restore.Models.SdsInstanceRestorationSpec">
+            <summary>
+            Spec object model for SdsInstanceRestoration CRD
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.Models.SdsInstanceRestorationSpec.InstanceUniqueId">
+            <summary>
+            Instance Unique Id of the restore target Sds Instance
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.Models.SdsInstanceRestorationSpec.RestoreTimestamp">
+            <summary>
+            Timestamp upto which to restore the data
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.Models.SdsInstanceRestorationSpec.SourceInstanceUniqueId">
+            <summary>
+            Instance Unique Id of the Source Sds Instance
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Restore.SdsRestoreOperationRecord">
+            <summary>
+            Sds Instance Restore Operation Record
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.SdsRestoreOperationRecord.BackupId">
+            <summary>
+            Backup Id used to restore from
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.SdsRestoreOperationRecord.InstanceUniqueId">
+            <summary>
+            SDS instance unique ID
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.SdsRestoreOperationRecord.RestorationInstanceUniqueId">
+            <summary>
+            Instance Unique Id of restore instance
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.SdsRestoreOperationRecord.RestorationAccountConnectionString">
+            <summary>
+            Connection String for the restoration target storage account
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Restore.TransferEndpoints">
+            <summary>
+            Endpoints for a restoration transfer
+            </summary>
+            <param name="SourceUri">Source URI</param>
+            <param name="DestinationUri">Destination URI</param>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Restore.TransferEndpoints.#ctor(System.Uri,System.Uri)">
+            <summary>
+            Endpoints for a restoration transfer
+            </summary>
+            <param name="SourceUri">Source URI</param>
+            <param name="DestinationUri">Destination URI</param>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.TransferEndpoints.SourceUri">
+            <summary>Source URI</summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Restore.TransferEndpoints.DestinationUri">
+            <summary>Destination URI</summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.SdsBackupRecord">
+            <summary>
+            Record of a backup
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.SdsBackupRecord.#ctor(System.String,System.DateTimeOffset)">
+            <summary>
+            Backup Record
+            </summary>
+            <param name="backupId">Unique identifier for the backup record</param>
+            <param name="startTime">Start time for the backup record</param>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.SdsBackupRecord.BackupId">
+            <summary>
+            Unique identifier for the backup record
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.SdsBackupRecord.StartTime">
+            <summary>
+            Start time for the backup record
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.SdsBackupRecord.SourceSnapshotCompletionTime">
+            <summary>
+            Completion time of source snapshotting
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.SdsBackupRecord.SourceSnapshotDuration">
+            <summary>
+            Duration of source snapshotting
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.SdsBackupRecord.EndTime">
+            <summary>
+            End time for the backup record
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.SdsBackupRecord.Duration">
+            <summary>
+            Duration of backup
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.SdsBackupRecord.FromDictionary(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Transforms record from dictionary
+            </summary>
+            <param name="dictionary">Dictionary of record properties</param>
+            <returns>Backup record</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.SdsBackupRecord.ToDictionary">
+            <summary>
+            Transforms record into dictionary
+            </summary>
+            <returns>Dictionary of record properties</returns>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.SdsBackupRecordContents">
+            <summary>
+            Contents of SDS Backup Record
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.SdsBackupRecordContents.#ctor">
+            <summary>
+            Contents of SDS Backup Record
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.SdsBackupRecordContents.KubernetesBackupRecord">
+            <summary>
+            Backup record for Kubernetes Resources
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.SdsBackupRecordReader">
+            <summary>
+            Azure Blob Storage SDS Backup Record Reader
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.SdsBackupRecordReader.#ctor(Azure.Storage.Blobs.BlobServiceClient,Microsoft.Extensions.Logging.ILogger)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.SdsBackupRecordRepository">
+            <summary>
+            Azure Blob Storage SDS Backup Record Repository
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.SdsBackupRecordRepository.#ctor(Azure.Storage.Blobs.BlobServiceClient,Microsoft.Extensions.Logging.ILogger{Aveva.Platform.Sds.Backup.SdsBackupRecordRepository})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.SdsBackupRecordRepository.#ctor(Azure.Storage.Blobs.BlobServiceClient,Microsoft.Extensions.Logging.ILogger)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Services.IWorkflowConnectionStringProvider">
+            <summary>
+            Provides the connection string for the workflow storage account.
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Services.IWorkflowConnectionStringProvider.GetConnectionStringAsync">
+            <summary>
+            Gets the connection string for the workflow storage account.
+            </summary>
+            <returns>ConnectionString</returns>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Services.WorkflowConnectionStringProvider">
+            <summary>
+            Provides the connection string for the workflow storage account.
+            </summary>
+            <param name="httpClient">Http Client</param>
+            <param name="logger">Logger</param>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Services.WorkflowConnectionStringProvider.#ctor(System.Net.Http.HttpClient,Microsoft.Extensions.Logging.ILogger{Aveva.Platform.Sds.Backup.Services.WorkflowConnectionStringProvider})">
+            <summary>
+            Provides the connection string for the workflow storage account.
+            </summary>
+            <param name="httpClient">Http Client</param>
+            <param name="logger">Logger</param>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Services.WorkflowConnectionStringProvider.GetConnectionStringAsync">
+            <summary>
+            Gets the connection string for the workflow storage account.
+            </summary>
+            <returns>Connection string for the workflow storage account.</returns>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.SnapshotMigrator">
+            <inheritdoc/>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.SnapshotMigrator.#ctor(Aveva.Platform.Sds.Backup.IBlobSasService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Aveva.Platform.Sds.Backup.SnapshotMigrator" /> class
+            </summary>
+            <param name="blobSasService">Service t generate SAS URIs</param>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.SnapshotMigrator.IncrementalCopyAsync(Aveva.Platform.Sds.Backup.IStateSnapshotItem)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.SourceState">
+            <summary>
+            Snapshotted state representation of source blob
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.SourceState.#ctor(Azure.Storage.Blobs.Specialized.PageBlobClient,Microsoft.Extensions.Logging.ILogger,Polly.IAsyncPolicy)">
+            <summary>
+            Create a source state using a blob source URL and a snapshot Id
+            </summary>
+            <param name="sourceBlobClient">Page blob client for source blob</param>
+            <param name="logger">Logger</param>
+            <param name="retryPolicy">Retry policy</param>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.SourceState.GetDiffRangesAsync(System.String,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.SourceState.GetPageBlobClient">
+            <inheritdoc/>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.StateDifference">
+            <summary>
+            Difference in file contents
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.StateDifference.#ctor(System.Int64,System.Nullable{System.Int64},System.Boolean)">
+            <summary>
+            Construct StateDifference
+            </summary>
+            <param name="offset">Index at which difference starts</param>
+            <param name="length">Length of difference</param>
+            <param name="isClear">Is the difference cleared pages</param>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.StateDifference.Offset">
+            <summary>
+            Start index of range
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.StateDifference.Length">
+            <summary>
+            Length of range
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.StateDifference.IsClear">
+            <summary>
+            Whether or not the difference is cleared pages
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.StateDifference.op_Equality(Aveva.Platform.Sds.Backup.StateDifference,Aveva.Platform.Sds.Backup.StateDifference)">
+            <summary>
+            Check if two <see cref="T:Aveva.Platform.Sds.Backup.StateDifference"/> instances are equal.
+            </summary>
+            <param name="left">The first instance to compare.</param>
+            <param name="right">The second instance to compare.</param>
+            <returns>True if they're equal, false otherwise.</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.StateDifference.op_Inequality(Aveva.Platform.Sds.Backup.StateDifference,Aveva.Platform.Sds.Backup.StateDifference)">
+            <summary>
+            Check if two <see cref="T:Aveva.Platform.Sds.Backup.StateDifference"/> instances are not equal.
+            </summary>
+            <param name="left">The first instance to compare.</param>
+            <param name="right">The second instance to compare.</param>
+            <returns>True if they're not equal, false otherwise.</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.StateDifference.Equals(Aveva.Platform.Sds.Backup.StateDifference)">
+            <summary>
+            Check if two <see cref="T:Aveva.Platform.Sds.Backup.StateDifference"/> instances are equal.
+            </summary>
+            <param name="other">The instance to compare to.</param>
+            <returns>True if they're equal, false otherwise.</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.StateDifference.Equals(System.Object)">
+            <summary>
+            Check if two <see cref="T:Aveva.Platform.Sds.Backup.StateDifference"/> instances are equal.
+            </summary>
+            <param name="obj">The instance to compare to.</param>
+            <returns>True if they're equal, false otherwise.</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.StateDifference.GetHashCode">
+            <summary>
+            Get a hash code for the <see cref="T:Aveva.Platform.Sds.Backup.StateDifference"/>.
+            </summary>
+            <returns>Hash code for the <see cref="T:Aveva.Platform.Sds.Backup.StateDifference"/>.</returns>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Telemetry.ITelemetryAccountParser">
+            <summary>
+            Telemetry Account Parser
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Telemetry.ITelemetryAccountParser.DiscoveryContainerBlobsSinceLastBackupAsync(System.DateTimeOffset,System.Threading.CancellationToken)">
+            <summary>
+            Discovers new containers and blobs since last backup
+            </summary>
+            <param name="lastBackupStartTime">Start time of last successful backup</param>
+            <param name="cancellationToken">Cancellation Token</param>
+            <returns>Dictionary with keys representing container names, and values representing all blobs discovery within that container since last backup</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Telemetry.ITelemetryAccountParser.GetContainersToRestoreAsync(System.DateTimeOffset,System.Threading.CancellationToken)">
+            <summary>
+            GetContainersToRestoreAsync
+            </summary>
+            <param name="restoreTimestamp">the restore timestamp</param>
+            <param name="cancellationToken">cancellation token</param>
+            <returns>enumerable of BlobContainerItem</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Telemetry.ITelemetryAccountParser.GetBlobsToRestoreAsync(System.String,System.DateTimeOffset,System.Threading.CancellationToken)">
+            <summary>
+            GetBlobsToRestoreAsync
+            </summary>
+            <param name="containerName">name of the container</param>
+            <param name="restoreTimestamp">timestamp of the restore</param>
+            <param name="cancellationToken">cancellation token</param>
+            <returns>Enumerable of BlobItem</returns>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Telemetry.ITelemetryAccountParserProvider">
+            <summary>
+            Provider for instance of TelemetryAccountParser
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Telemetry.ITelemetryAccountParserProvider.GetAccountParser">
+            <summary>
+            Retreives instance of TelemetryAccountParser for Telemetry Storage Account
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Telemetry.ITelemetryAccountParserProvider.GetBackupAccountParser">
+            <summary>
+            Retreives instance of TelemetryAccountParser for Telemetry Backup Storage Account
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Telemetry.ITelemetryBlobServiceClientProvider">
+            <summary>
+            BlobServiceClient provider for telemetry backup and restore storage accounts
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Telemetry.ITelemetryBlobServiceClientProvider.GetTelemetryBlobServiceClient">
+            <summary>
+            Retreives Telemetry Storage Account Blob Service Client from Environment Variables
+            </summary>
+            <returns>Telemetry Storage Account Blob Service Client</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Telemetry.ITelemetryBlobServiceClientProvider.GetTelemetryBackupBlobServiceClient">
+            <summary>
+            Retreives Telemetry Backup Storage Account Blob Service Client from Environment Variables
+            </summary>
+            <returns>Telemetry Backup Storage Account Blob Service Client</returns>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Telemetry.TelemetryAccountParser">
+            <summary>
+            Parse for telemetry containers and blobs based on expected name formatting
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Telemetry.TelemetryAccountParser.#ctor(Azure.Storage.Blobs.BlobServiceClient,Microsoft.Extensions.Logging.ILogger)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Aveva.Platform.Sds.Backup.Telemetry.TelemetryAccountParser"/> class.
+            </summary>
+            <param name="blobServiceClient">BlobServiceClient for telemetry storage account</param>
+            <param name="logger">Logger instance</param>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Telemetry.TelemetryAccountParser.DiscoveryContainerBlobsSinceLastBackupAsync(System.DateTimeOffset,System.Threading.CancellationToken)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Telemetry.TelemetryAccountParser.GetContainersToRestoreAsync(System.DateTimeOffset,System.Threading.CancellationToken)">
+            <summary>
+            Get all containers edited/created before the restore timestamp
+            </summary>
+            <param name="restoreTimestamp">Timestamp upto which restoration needs to be performed</param>
+            <param name="cancellationToken">Cancellation Token</param>
+            <returns>List of containers edited/created before restore timestamp</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Telemetry.TelemetryAccountParser.GetBlobsToRestoreAsync(System.String,System.DateTimeOffset,System.Threading.CancellationToken)">
+            <summary>
+            Get all container blobs created before restore timestamp
+            </summary>
+            <param name="containerName">Container Name</param>
+            <param name="restoreTimestamp">Timestamp upto which restoration needs to be performed</param>
+            <param name="cancellationToken">Cancellation Token</param>
+            <returns>List of blobs to restore</returns>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Telemetry.TelemetryAccountParserProvider">
+            <inheritdoc/>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Telemetry.TelemetryAccountParserProvider.#ctor(Aveva.Platform.Sds.Backup.Telemetry.ITelemetryBlobServiceClientProvider,Microsoft.Extensions.Logging.ILogger{Aveva.Platform.Sds.Backup.Telemetry.TelemetryAccountParserProvider})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Aveva.Platform.Sds.Backup.Telemetry.TelemetryAccountParserProvider"/> class.
+            </summary>
+            <param name="telemetryClientProvider">Instance of ITelemetryBlobServiceClientProvider</param>
+            <param name="logger">Logger instance</param>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Telemetry.TelemetryAccountParserProvider.GetAccountParser">
+            <inheritdoc/>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Telemetry.TelemetryAccountParserProvider.GetBackupAccountParser">
+            <inheritdoc/>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Telemetry.TelemetryBackupRecord">
+            <summary>
+            Record of a telemetry backup
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Telemetry.TelemetryBackupRecord.#ctor(System.String,System.DateTimeOffset)">
+            <summary>
+            Telemetry Backup Record
+            </summary>
+            <param name="backupId">Unique identifier for the backup record</param>
+            <param name="startTime">Start time for the backup record</param>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Telemetry.TelemetryBackupRecord.BackupId">
+            <summary>
+            Unique identifier for the backup record
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Telemetry.TelemetryBackupRecord.StartTime">
+            <summary>
+            Start time for the backup record
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Telemetry.TelemetryBackupRecord.EndTime">
+            <summary>
+            End time for the backup record
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Telemetry.TelemetryBackupRecord.Duration">
+            <summary>
+            Duration of backup
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Telemetry.TelemetryBackupRecord.FromDictionary(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Transforms record from dictionary
+            </summary>
+            <param name="dictionary">Dictionary of record properties</param>
+            <returns>Backup record</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Telemetry.TelemetryBackupRecord.ToDictionary">
+            <summary>
+            Transforms record into dictionary
+            </summary>
+            <returns>Dictionary of record properties</returns>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Telemetry.TelemetryBlobServiceClientProvider">
+            <inheritdoc/>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Telemetry.TelemetryBlobServiceClientProvider.#ctor">
+            <summary>
+            Creates new instance
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Telemetry.TelemetryBlobServiceClientProvider.GetTelemetryBlobServiceClient">
+            <inheritdoc/>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Telemetry.TelemetryBlobServiceClientProvider.GetTelemetryBackupBlobServiceClient">
+            <inheritdoc/>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Telemetry.TelemetryRestorationRequest">
+            <summary>
+            Request body schema for telemetry restoration requests
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Telemetry.TelemetryRestorationRequest.RestoreTimestamp">
+            <summary>
+            Timestamp to restore
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Telemetry.TelemetryRestorationRequest.OverwriteExisting">
+            <summary>
+            Whether or not to complete restoration, even if the restoration account already has content
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Telemetry.TelemetryRestorationResponse">
+            <summary>
+            Response schema for telemetry restoration requests
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Telemetry.TelemetryRestorationResponse.Response">
+            <summary>
+            Response string
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Telemetry.TelemetryRestorationResponse.RestoreId">
+            <summary>
+            Restore Operation Id
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Telemetry.TelemetryRestorationResponse.TelemetryBackupRecord">
+            <summary>
+            Latest Telemetry Backup Record that started before the Restore Timestamp
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Telemetry.TelemetryRestoreOperationRecord">
+            <summary>
+            Telemetry Restore Operation Status
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Backup.Telemetry.TelemetryRestoreOperationRecord.RestoreTimestamp">
+            <summary>
+            Restore timestamp
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Backup.Telemetry.TelemetryStorageAccountRestorer">
+            <summary>
+            Restores telemetry storage account from backup
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Telemetry.TelemetryStorageAccountRestorer.#ctor(Aveva.Platform.Sds.Backup.Telemetry.ITelemetryBlobServiceClientProvider,Aveva.Platform.Sds.Backup.Restore.IBackupRecordRepositoryProvider,Aveva.Platform.Sds.Backup.Telemetry.ITelemetryAccountParserProvider,Aveva.Platform.Sds.Backup.IBlobSasService,Microsoft.Extensions.Logging.ILogger{Aveva.Platform.Sds.Backup.Telemetry.TelemetryStorageAccountRestorer})">
+            <summary>
+            Creates new telemetry storage account restorer
+            </summary>
+            <param name="telemetryBlobClientProvider">Instance of ITelemetryBlobServiceClientProvider</param>
+            <param name="backupRecordRepositoryProvider">Instance of IBackupRecordRepositoryProvider</param>
+            <param name="telemetryAccountParserProvider">Instance of ITelemetryAccountParserProvider</param>
+            <param name="blobSasService">Instance of BlobSasService for generating SAS URIs</param>
+            <param name="logger">Logger</param>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Telemetry.TelemetryStorageAccountRestorer.RestoreAsync(Aveva.Platform.Sds.Backup.Telemetry.TelemetryRestorationRequest)">
+            <summary>
+            Restores telemetry storage account
+            </summary>
+            <param name="restorationRequest">Restoration Request</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> representing the result of the asynchronous operation.</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Telemetry.TelemetryStorageAccountRestorer.GetRestoreRecord(System.Guid)">
+            <summary>
+            Get the record of telemetry restore operation
+            </summary>
+            <param name="restoreId">Restore Id</param>
+            <returns>Record of telemetry restore operation</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Telemetry.TelemetryStorageAccountRestorer.GetRestoreStatus(System.Guid)">
+            <summary>
+            Get the status of telemetry restore operation
+            </summary>
+            <param name="restoreId">Restore Id</param>
+            <returns>Record of telemetry restore operation</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Telemetry.TelemetryStorageAccountRestorer.ResumeRestoreAsync(System.Guid)">
+            <summary>
+            Resume a failed restore operation
+            </summary>
+            <param name="restoreId">Restore ID</param>
+            <returns>TelemetryRestorationResponse</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Telemetry.TelemetryStorageAccountRestorer.StopRestore(System.Guid)">
+            <summary>
+            Stop a running restore operation
+            </summary>
+            <param name="restoreId">Restore ID</param>
+            <returns>Result indicating status of the Delete request</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Telemetry.TelemetryStorageAccountRestorer.Dispose">
+            <summary>
+            This code added to correctly implement the disposable pattern.
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Backup.Telemetry.TelemetryStorageAccountRestorer.Dispose(System.Boolean)">
+            <summary>
+            Dispose disposable components
+            </summary>
+            <param name="disposing">disposing</param>
+        </member>
+    </members>
+</doc>

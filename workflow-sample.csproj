@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace>uv_playground</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Tests\**" />
+    <EmbeddedResource Remove="Tests\**" />
+    <None Remove="Tests\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="KubernetesClient" Version="14.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.6" />
+    <PackageReference Include="Moq" Version="4.20.72" />
+    <PackageReference Include="Polly" Version="8.6.1" />
+    <PackageReference Include="Polly.Contrib.WaitAndRetry" Version="1.1.1" />
+    <PackageReference Include="xunit.abstractions" Version="2.0.3" />
+    <PackageReference Include="xunit.assert" Version="2.9.3" />
+    <PackageReference Include="xunit.extensibility.core" Version="2.9.3" />
+	  <PackageReference Include="Aveva.Platform.Common.Workflow.Engine" Version="1.2.16" />
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Aveva.Platform.Sds.Backup">
+      <HintPath>..\..\repos\platform-sds\NuGetPackages\Aveva.Platform.Sds.Backup\bin\Debug\net8.0\Aveva.Platform.Sds.Backup.dll</HintPath>
+    </Reference>
+    <Reference Include="Aveva.Platform.Sds.Kubernetes.Communication">
+      <HintPath>..\..\repos\platform-sds\NuGetPackages\Aveva.Platform.Sds.Kubernetes.Communication\bin\Debug\net8.0\Aveva.Platform.Sds.Kubernetes.Communication.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

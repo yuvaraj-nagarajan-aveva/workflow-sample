@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Aveva.Platform.Sds.Telemetry.Publishers</name>
+    </assembly>
+    <members>
+        <member name="T:Aveva.Platform.Sds.Telemetry.Publishers.BlobTelemetryWriter">
+            <summary>
+            An implementation of <see cref="T:Aveva.Platform.Sds.Telemetry.ITelemetryWriter"/> that writes to Azure Blob Storage.
+            It containerizes by system name and month.
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Telemetry.Publishers.LoggerTelemetryWriter">
+            <summary>
+            Writes telemetry to a <see cref="T:Microsoft.Extensions.Logging.ILogger"/> at <see cref="F:Microsoft.Extensions.Logging.LogLevel.Information"/> level.
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Telemetry.Publishers.PeriodicPublisher`1">
+            <summary>
+            Simple periodic publisher for an <see cref="T:Aveva.Platform.Sds.Telemetry.ITelemetryTracker`1"/> instance.
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Telemetry.Publishers.PeriodicPublisher`1.StartPublishingAsync(System.TimeSpan,System.TimeSpan,System.TimeSpan,System.Threading.CancellationToken)">
+            <summary>
+            It is a publishing loop that exits only when <paramref name="token"/> is cancelled.
+            </summary>
+            <param name="period">How often to publish.</param>
+            <param name="timeout">What's the timeout for the publishing call.</param>
+            <param name="cancelTimeout">What's the timeout when operation is cancelled and all events get flushed. 
+            Note, if it is 0, then the events won't get flushed upon cancellation.</param>
+            <param name="token">Cancellation token</param>
+            <remarks>Throws only <see cref="T:System.OperationCanceledException"/>.</remarks>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Telemetry.Publishers.TelemetryBlobNameFormatter.ParseContainerName(System.String)">
+            <summary>
+            Parses container name to return year and month values
+            </summary>
+            <param name="name">Container Name</param>
+            <returns>(Year, Month) tuple</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Telemetry.Publishers.TelemetryBlobNameFormatter.ParseBlobName(System.String)">
+            <summary>
+            Parses Blob name to return day, hour, minute, second values
+            </summary>
+            <param name="name">Blob Name</param>
+            <returns>(Day, Hour, Minute, Second) parsed values</returns>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Aveva.Platform.Sds.Telemetry</name>
+    </assembly>
+    <members>
+        <member name="M:Aveva.Platform.Sds.Telemetry.BloomSet.Add(System.String)">
+            True if element inserted, false if present
+        </member>
+        <member name="M:Aveva.Platform.Sds.Telemetry.BloomSet.HashString(System.ReadOnlySpan{System.Char})">
+            <summary>
+            Hashes a string using Bob Jenkin's "One At A Time" method from Dr. Dobbs (http://burtleburtle.net/bob/hash/doobs.html).
+            Runtime is suggested to be 9x+9, where x = input.Length.
+            </summary>
+            <param name="input">The string to hash.</param>
+            <returns>The hashed result.</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Telemetry.BloomSet.GetFNV1aHash(System.ReadOnlySpan{System.Char})">
+            <summary>
+            Computes FNV-1a (32-bit) non-cryptographic hash function.
+            Adapted from: http://isthe.com/chongo/tech/comp/fnv/index.html 
+            Note: converts characters to upper invariant form for case-insensitive hash.
+            </summary>
+            <param name="id">The string to hash.</param>
+            <returns>The hashed result.</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Telemetry.BloomSet.GetOptimalNumHashPasses(System.Int32,System.Single)">
+            <summary>
+            The optimal number of hash passes, k = (m/n)ln2.
+            A. Broder and M. Mitzenmacher. Network Applications of Bloom Filters: A Survey.
+            InternetMathematics, 1(4):485-509, 2004. https://www.eecs.harvard.edu/~michaelm/postscripts/im2005b.pdf
+            </summary>
+            <param name="numExpectedElements">number of elements,n, expected to be inserted in the Bloom set</param>
+            <param name="falsePositiveRate">desired false positive rate, f</param>
+            <returns>The optimal number of hash passes</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Telemetry.BloomSet.GetOptimalNumFilterBits(System.Int32,System.Single)">
+            <summary>
+            Under the optimal condition, the false positive rate, f = (1/2)^k.  Algebraically solving for m gives the optimal
+            number of bits in the filter.
+            A. Broder and M. Mitzenmacher. Network Applications of Bloom Filters: A Survey.
+            InternetMathematics, 1(4):485-509, 2004. https://www.eecs.harvard.edu/~michaelm/postscripts/im2005b.pdf
+            </summary>
+            <param name="numExpectedElements">number of elements,n, expected to be inserted in the Bloom set</param>
+            <param name="falsePositiveRate">desired false positive rate, f</param>
+            <returns>the optimal number of bits in the filter.</returns>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Telemetry.IAggregator`1">
+            <summary>
+            General aggregation interface for <typeparamref name="T"/> events.
+            </summary>
+            <typeparam name="T">Event type to aggregate.</typeparam>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Telemetry.IDistinctTracker`1">
+            <summary>
+            A tracker that keeps account of distinct <typeparamref name="T"/> objects
+            by means of transforming the passed object to a canonical form.
+            </summary>
+            <typeparam name="T">Object to track.</typeparam>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Telemetry.ITelemetryTracker`1">
+            <summary>
+            A telemetry tracker interface.
+            </summary>
+            <typeparam name="T">Type of the object to track.</typeparam>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Telemetry.ITelemetryWriter">
+            <summary>
+            Telemetry writer interface to write aggregated telemetry to a respective store/backend.
+            </summary>
+        </member>
+        <member name="P:Aveva.Platform.Sds.Telemetry.StreamAccess.DistinctStreamTracker.TrackingStartTime">
+            <summary>
+            When the tracking started. Defaults to <see cref="P:System.DateTime.UtcNow"/> at the time of constructing the object.
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Telemetry.StreamAccess.DistinctStreamTracker.IsActive(System.DateTime)">
+            <summary>
+            Indicates if this tracker is active for the given time. For the streams, it returns
+            true if <seealso cref="P:Aveva.Platform.Sds.Telemetry.StreamAccess.DistinctStreamTracker.TrackingStartTime"/> date and <paramref name="time"/> date or <paramref name="time"/> less one day match.
+            </summary>
+        </member>
+        <member name="F:Aveva.Platform.Sds.Telemetry.StreamAccess.StreamTelemetryTracker.TelemetryFieldsKey">
+            <summary>
+            Keys telemetry by Direction, TenantId, NamespaceId, CommunityId, CallerTenantId, and Date, excluding the the time.
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Telemetry.TelemetryTracker`1">
+            <summary>
+            Generic implementation of <see cref="T:Aveva.Platform.Sds.Telemetry.ITelemetryTracker`1"/> with aggregation and distinct item tracking support.
+            All operations are thread-safe.
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Telemetry.TelemetryTracker`1.Track(`0)">
+            <summary>
+            This method is thread safe and does not throw.
+            </summary>
+        </member>
+    </members>
+</doc>

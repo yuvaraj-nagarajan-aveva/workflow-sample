@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Aveva.Platform.Sds.Logging</name>
+    </assembly>
+    <members>
+        <member name="M:Aveva.Platform.Sds.Logging.Configuration.LoggingConfigurationProvider.SetLevel(System.Collections.Generic.List{Aveva.Platform.Sds.Logging.Configuration.LoggingConfiguration})">
+            <summary>
+            Sets LogLevel configuration values and triggers configuration reload for the ILogger or ILogger{T}
+            </summary>
+            <param name="configurations">LogLevel configurations to set</param>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Logging.MiddlewareHelpers.HttpContextExtensions.GetValidatedRequestMethod(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Validates that the HttpContext.Method is either "GET", "POST", "PUT", "DELETE", "PATCH" or "HEAD". Returns null if not.
+            </summary>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Logging.MiddlewareHelpers.HttpResponseErrorParser">
+            <summary>
+            This class facilitates reading the content of an HttpResponse.Body and formatting it into a standardized
+            response error.
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Logging.MiddlewareHelpers.HttpResponseErrorParser.GetErrorMessageAsync(Microsoft.AspNetCore.Http.HttpResponse)">
+            <summary>
+            Builds a string with the standard response error info
+            </summary>
+            <param name="response">HttpResponse whose Body will be read from</param>
+            <returns>The built string</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Logging.MiddlewareHelpers.HttpResponseErrorParser.GetFormattedMessage(System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Builds a string with the standard response error info followed by any non-standard info.
+            </summary>
+            <param name="content">Dictionary representation of HttpResponse Body</param>
+            <returns>The built string</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Logging.MiddlewareHelpers.HttpResponseErrorParser.GetBodyAsStringAsync(Microsoft.AspNetCore.Http.HttpResponse)">
+            <summary>
+            Reads the Body stream from an HttpResponse object
+            </summary>
+            <param name="response">HttpResponse whose Body object will be read from</param>
+            <returns>string representation of the read stream</returns>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Logging.MiddlewareHelpers.RequestComponents">
+            <summary>
+            <see cref="T:Aveva.Platform.Sds.Logging.MiddlewareHelpers.RequestComponents"/> - parses several strings from the requested url including <see cref="!:TenantId"/>, <see cref="!:NamespaceId"/>, <see cref="P:Aveva.Platform.Sds.Logging.MiddlewareHelpers.RequestComponents.SdsObjectType"/> and <see cref="P:Aveva.Platform.Sds.Logging.MiddlewareHelpers.RequestComponents.SdsObjectId"/>
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Logging.MiddlewareHelpers.RequestComponents.#ctor(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            <see cref="T:Aveva.Platform.Sds.Logging.MiddlewareHelpers.RequestComponents"/> - constructor for the <see cref="T:Aveva.Platform.Sds.Logging.MiddlewareHelpers.RequestComponents"/> class
+            </summary>
+            <param name="httpContext">the context that houses the request</param>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Logging.MiddlewareHelpers.RequestComponents.GetSdsObjectType(System.String)">
+            <summary>
+             <see cref="M:Aveva.Platform.Sds.Logging.MiddlewareHelpers.RequestComponents.GetSdsObjectType(System.String)"/> - turns the parsed text into an enum value
+            </summary>
+            <param name="sdsObjectTypeString">the string to generate enum value from</param>
+            <returns>an SdsObjectType</returns>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Logging.MiddlewareHelpers.UserLogCreator">
+            <summary>
+            <see cref="T:Aveva.Platform.Sds.Logging.MiddlewareHelpers.UserLogCreator"/> - contains logic for when and when not to expose a user facing log message
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Logging.MiddlewareHelpers.UserLogCreator.CreateUserLogIfRequired(Microsoft.AspNetCore.Http.HttpContext,Microsoft.Extensions.Logging.ILogger)">
+            <summary>
+            Exposes a response message to the user if the request is an SDS Object type associated with the service
+            that received the request. Does not log GET requests and stream data operations.
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Logging.MiddlewareHelpers.UserLogCreator.BuildLogMessage(System.Net.Http.HttpMethod,System.Boolean,Aveva.Platform.Sds.Conventions.SdsObjectType,System.String)">
+            <summary>
+            BuildLogMessage - constructs the user facing loge message
+            </summary>
+            <param name="requestMethod">the http request method</param>
+            <param name="isResponseSuccessOrFound">bool indicating if the request was successful</param>
+            <param name="sdsObjectType">SDS Type, Stream, View or StreamView</param>
+            <param name="sdsObjectId">the unique object id for the SDS Object</param>
+            <returns>the constructed log string</returns>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Logging.MiddlewareHelpers.UserLogCreator.GetEventId(System.Boolean,System.Net.Http.HttpMethod)">
+            <summary>
+            GetEventId - gets the user facing event id based on success/failure and request type
+            </summary>
+            <param name="isResponseSuccessOrFound">bool indicating if request was successful or not</param>
+            <param name="httpMethod">the http request method</param>
+            <returns>an event id</returns>
+        </member>
+        <member name="T:Aveva.Platform.Sds.Logging.Middleware.LogUserFacingMessageMiddleware">
+            <summary>
+            <see cref="T:Aveva.Platform.Sds.Logging.Middleware.LogUserFacingMessageMiddleware"/>> - class which exposes a user facing log message if the object being acted upon is an SDS Type or SDS Stream View
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Logging.Middleware.LogUserFacingMessageMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate,Microsoft.Extensions.Logging.ILogger{Aveva.Platform.Sds.Logging.Middleware.LogUserFacingMessageMiddleware},System.Collections.Generic.List{Aveva.Platform.Sds.Conventions.SdsObjectType})">
+            <summary>
+            constructor for the <see cref="T:Aveva.Platform.Sds.Logging.Middleware.LogUserFacingMessageMiddleware"/>> class
+            </summary>
+            <param name="next">the request delegate</param>
+            <param name="logger">the ILogger</param>
+            <param name="sdsObjectTypes">list of <see cref="T:Aveva.Platform.Sds.Conventions.SdsObjectType"/> associated with a particular service</param>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Logging.Middleware.LogUserFacingMessageMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            InvokeAsync - makes the async request
+            </summary>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Logging.ServiceCollectionExtensions.AddProgramLevelLogging(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>Adds services to initialize program level logging before host is built.</summary>
+            <remarks>Should not be used as part of the setup for host service collection.</remarks>
+        </member>
+        <member name="M:Aveva.Platform.Sds.Logging.ServiceCollectionExtensions.AddAzureActivitySourceScreeningProcessor(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <remarks>This extension should be removed when EnableAzureActivitySource is supported by instrumentation libraries.</remarks>
+        </member>
+    </members>
+</doc>
