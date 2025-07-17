@@ -19,15 +19,17 @@ using uv_playground;
 using uv_playground.Activities;
 using uv_playground.Models;
 
-BlobServiceClient cc = new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=b6dbackup1254043140;AccountKey=uZnrkfVQK4DsyiJKvBTu88DDBoGPv/AEFffe4Y1JUsCA/KT/SG4c+HXCtkZyb+vWulfR9cUeemq/+AStDWl6sg==;BlobEndpoint=https://b6dbackup1254043140.z7.blob.storage.azure.net/;FileEndpoint=https://b6dbackup1254043140.z7.file.storage.azure.net/;TableEndpoint=https://b6dbackup1254043140.z7.table.storage.azure.net/;QueueEndpoint=https://b6dbackup1254043140.z7.queue.storage.azure.net/");
-
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration((hostingContext, config) =>
     {
         config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+        config.AddUserSecrets<Program>();
     })
     .ConfigureServices((context, services) =>
     {
+        var configuration = context.Configuration;
+        BlobServiceClient cc = new BlobServiceClient(configuration["BlobStorage:ConnectionString"]);
+
         // Register your services here
         services.AddKeyedSingleton("backup", cc);
         services.AddTransient<IGreeter, Greeter>();
