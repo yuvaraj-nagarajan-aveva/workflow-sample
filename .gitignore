@@ -2,7 +2,6 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/.vs/workflow-sample
+/.vs
 /obj
-/Tests/bin
-/Tests/obj
+/bin/Debug/net9.0
